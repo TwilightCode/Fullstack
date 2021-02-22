@@ -58,7 +58,7 @@ describe('posting blogs', () => {
             likes: 6
 
         }
-        const result = (await api.post('/api/blogs').send(newBlog)).body
+        const result = (await api.post('/api/blogs').send(newBlog).set('authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhYWEiLCJpZCI6IjYwMzQxNTEwODY0Y2M2ZDhjMTY1MGQzOSIsImlhdCI6MTYxNDAyNjAzOX0.wONt4qpppzWW1EopA-NU_EZzrUOxU9i-o1dAwuIma9c')).body
 
         expect(result.title).toEqual(newBlog.title)
         expect(result.author).toEqual(newBlog.author)
@@ -80,7 +80,7 @@ describe('posting blogs', () => {
             url: "some address",
 
         }
-        const result = (await api.post('/api/blogs').send(newBlog)).body
+        const result = (await api.post('/api/blogs').send(newBlog).set('authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhYWEiLCJpZCI6IjYwMzQxNTEwODY0Y2M2ZDhjMTY1MGQzOSIsImlhdCI6MTYxNDAyNjAzOX0.wONt4qpppzWW1EopA-NU_EZzrUOxU9i-o1dAwuIma9c')).body
         expect(result.likes).toEqual(0)
     })
 
@@ -91,7 +91,7 @@ describe('posting blogs', () => {
             likes: 0
 
         }
-        await (api.post('/api/blogs').send(newBlog)).expect(400)
+        await (api.post('/api/blogs').send(newBlog).set('authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhYWEiLCJpZCI6IjYwMzQxNTEwODY0Y2M2ZDhjMTY1MGQzOSIsImlhdCI6MTYxNDAyNjAzOX0.wONt4qpppzWW1EopA-NU_EZzrUOxU9i-o1dAwuIma9c')).expect(400)
 
     })
 
@@ -107,30 +107,22 @@ describe('posting blogs', () => {
             url: "some address",
             likes: 6
         }
-        const result = (await api.post('/api/blogs').send(newBlog)).body
+        const result = (await api.post('/api/blogs').send(newBlog).set('authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhYWEiLCJpZCI6IjYwMzQxNTEwODY0Y2M2ZDhjMTY1MGQzOSIsImlhdCI6MTYxNDAyNjAzOX0.wONt4qpppzWW1EopA-NU_EZzrUOxU9i-o1dAwuIma9c')).body
         var amount = await api.get('/api/blogs')
         expect(amount.body).toHaveLength(initialBlogs.length + 1)
 
-        await api.delete(`/api/blogs/${result.id}`)
+        await api.delete(`/api/blogs/${result.id}`).set('authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhYWEiLCJpZCI6IjYwMzQxNTEwODY0Y2M2ZDhjMTY1MGQzOSIsImlhdCI6MTYxNDAyNjAzOX0.wONt4qpppzWW1EopA-NU_EZzrUOxU9i-o1dAwuIma9c')
         amount = await api.get('/api/blogs')
         expect(amount.body).toHaveLength(initialBlogs.length)
 
     })
 
-    test(' blog is destroyed', async () => {
-        const newBlog = {
-            title: "new",
-            author: "new Author",
-            url: "some address",
-            likes: 6
-        }
-        const result = (await api.post('/api/blogs').send(newBlog)).body
-        newBlog.likes = 8
-        const r = (await api.put(`/api/blogs/${result.id}`).send(newBlog)).body
-        expect(r.likes).toEqual(8)
-
-    })
+  
 })
+
+
+
+
 describe('posting users', () => {
     test('works if proper user is given', async () => {
         const newPerson = {
@@ -181,8 +173,8 @@ describe('posting users', () => {
         }
 
 
-        await api.post('/api/users').send(newPerson).expect(400)
-        await api.post('/api/users').send(newPerson2).expect(400)
+        await api.post('/api/users').send(newPerson).expect(400).set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhYWEiLCJpZCI6IjYwMzQxNTEwODY0Y2M2ZDhjMTY1MGQzOSIsImlhdCI6MTYxNDAyNjAzOX0.wONt4qpppzWW1EopA-NU_EZzrUOxU9i-o1dAwuIma9c')
+        await api.post('/api/users').send(newPerson2).expect(400).set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhYWEiLCJpZCI6IjYwMzQxNTEwODY0Y2M2ZDhjMTY1MGQzOSIsImlhdCI6MTYxNDAyNjAzOX0.wONt4qpppzWW1EopA-NU_EZzrUOxU9i-o1dAwuIma9c')
         const results = (await api.get('/api/users')).body
 
         expect(results).toHaveLength(initialUsers.length)
